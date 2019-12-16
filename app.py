@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, session, pypugjs
+from flask import Flask, render_template, request, session
+
 app = Flask(__name__)
 
+app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
+app.debug = True
+
 @app.route('/')
-def index():
-    return pypugjs.register_filter("login.pug")
-    # return render_template('login.html')
+def hello():
+    return render_template('login.pug')
+
+if __name__ == "__main__":
+    app.run()
 
 @app.route('/info/<number>')
 def info(number):
