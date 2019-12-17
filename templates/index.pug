@@ -1,0 +1,10 @@
+html
+    head
+    body
+        if userId
+            p Welcome, #{userId}!
+            a(href="/logout") Log out
+        else
+            a(href="/login") Log in
+        h1 This is index.
+        
