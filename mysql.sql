@@ -1,23 +1,12 @@
--- USER SQL
-CREATE USER Muffin IDENTIFIED BY 1234 ;
+CREATE TABLE `muffin`.`users` (
+  `userid` VARCHAR(255) NOT NULL,
+  `pw` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE INDEX `userid_UNIQUE` (`userid` ASC) VISIBLE);
 
--- QUOTAS
 
--- ROLES
-GRANT "DBA" TO Muffin ;
-GRANT "CONNECT" TO Muffin ;
-GRANT "RESOURCE" TO Muffin ;
+insert into users values('melonpan', '1234', 'melon');
+insert into users values('m', '1234', 'mm');
 
--- SYSTEM PRIVILEGES
-
-CREATE TABLE MUSER 
-(
-  USERID NUMBER NOT NULL 
-, PW VARCHAR2(20) NOT NULL 
-, USERNAME VARCHAR2(20) NOT NULL 
-, CONSTRAINT MUSER_PK PRIMARY KEY 
-  (
-    USERID 
-  )
-  ENABLE 
-);
+select * from users;

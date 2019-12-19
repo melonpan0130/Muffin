@@ -5,6 +5,10 @@ app = Flask(__name__)
 app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.debug = True
 
+@app.before_first_request
+def before_first_request():
+    session['userId'] = ''
+
 @app.route('/')
 def home():
     return render_template('index.pug', userId = session['userId'])
@@ -27,18 +31,24 @@ def loginProc():
         pw = request.form['pw']
 
         if len(userId) == 0 or len(pw) == 0 :
-            return userId + ', ' + pw + ' 로그인 정보를 제대로 입력하지 않았습니다.'
+            return '(' + userId + ', ' + pw + ') Please write on your ID or Password.'
 
-        session['logFlag'] = 'true'
         session['userId'] = userId
         return redirect('/')
     else : 
-        return '잘못된 접근입니다.'
+        return 'Somethings wrong.'
 app.secret_key = 'sample_secret_key'
 
 
 @app.route('/logout')
 def logout():
-    session['logFlag'] = 'false'
     session['userId'] = ''
     return redirect('/')
+
+@app.route('/join', methods=['GET', 'POST'])
+def join():
+    if request.method == 'POST' :
+        # insert user data into connected DB
+        return '<p>Joined</p>'
+    else :
+        return render_template('join.pug')
