@@ -5,13 +5,11 @@ app = Flask(__name__)
 app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.debug = True
 
-@app.before_first_request
-def before_first_request():
-    session['userId'] = ''
-
 @app.route('/')
 def home():
-    return render_template('index.pug', userId = session['userId'])
+    if 'userId' in session :
+        return render_template('index.pug', userId = session['userId'])
+    return render_template('index.pug')
 
 if __name__ == "__main__":
     app.run()
@@ -42,7 +40,7 @@ app.secret_key = 'sample_secret_key'
 
 @app.route('/logout')
 def logout():
-    session['userId'] = ''
+    session.pop('userId')
     return redirect('/')
 
 @app.route('/join', methods=['GET', 'POST'])
