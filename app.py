@@ -1,9 +1,24 @@
 from flask import Flask, render_template, request, session, redirect
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-
+app.secret_key = '1234'
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:''@localhost/muffin"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.debug = True
+
+db = SQLAlchemy(app)
+
+class users(db.Model):
+    userid = db.Column("userid", db.String(255), primary_key=True, unique = True)
+    pw = db.Column("pw", db.String(255))
+    name = db.Column("name", db.String(255))
+
+    def __init__(self, userid, pw, name) :
+        self.userid = userid
+        self.pw = pw
+        self.name = name
 
 @app.route('/')
 def home():
@@ -12,6 +27,7 @@ def home():
     return render_template('index.pug')
 
 if __name__ == "__main__":
+    # db.create_all()
     app.run()
 
 @app.route('/info/<number>')
@@ -35,12 +51,11 @@ def loginProc():
         return redirect('/')
     else : 
         return 'Somethings wrong.'
-app.secret_key = 'sample_secret_key'
 
 
 @app.route('/logout')
 def logout():
-    session.pop('userId')
+    session.pop('userId', None)
     return redirect('/')
 
 @app.route('/join', methods=['GET', 'POST'])
