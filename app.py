@@ -1,14 +1,17 @@
 from flask import Flask, render_template, request, session, redirect
+
+app = Flask(__name__)
+app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
+app.debug = True
+
+'''
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, Table, Column, String, Metadata
 from sqlalchemy.sql import select
 
-app = Flask(__name__)
 app.secret_key = '1234'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1234@localhost/muffin"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
-app.debug = True
 
 db = SQLAlchemy(app)
 
@@ -21,6 +24,7 @@ class users(db.Model):
         self.userid = userid
         self.pw = pw
         self.name = name
+'''
 
 @app.route('/')
 def home():
